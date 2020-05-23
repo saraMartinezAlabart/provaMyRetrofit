@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import android.widget.Toast;
 
 import java.util.List;
 
 import cat.saramtzalabart.tfg.myretrofit.domini.Patient;
 import cat.saramtzalabart.tfg.myretrofit.service.JsonPlaceHolderApi;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,16 +19,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textViewResult;
+    private TextView tvResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textViewResult = findViewById(R.id.text_view_result);
+        tvResult = findViewById(R.id.tv_result);
 
         //Gson gson = new GsonBuilder().serializeNulls().create();
+
+        /*OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder();
+        okHttpClientBuilder.addInterceptor(new AuthInterceptor());
+        OkHttpClient client = okHttpClientBuilder.build();*/
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://vws15459.dinaserver.com:8087/baseDstu3/")
                 .addConverterFactory(GsonConverterFactory.create())//gson
@@ -43,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Patient>> call, Response<List<Patient>> response) {
                 if(!response.isSuccessful()){
-                    textViewResult.setText("Code: " + response.code());
+                    //etName.setText("Code: " + response.code());
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -56,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
                     content += "Gender: " + patient.getGender() +"\n";
                     content += "Birth Date: " + patient.getBirthDate().toString() +"\n";
                     content += "DNI: " + patient.getIdentifier().getDni() +"\n\n";
-
-                    textViewResult.append(content);
+                    tvResult.append(content);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Patient>> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
+                tvResult.setText(t.getMessage());
             }
         });
     }
