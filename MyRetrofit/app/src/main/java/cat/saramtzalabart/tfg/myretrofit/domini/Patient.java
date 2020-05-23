@@ -1,13 +1,21 @@
 package cat.saramtzalabart.tfg.myretrofit.domini;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 
 public class Patient {
+    @Expose
     private String resourceType;
+    @Expose
     private Integer id;
+    @Expose
     private Identifier identifier;
+    @Expose
     private HumanName name;
+    @Expose
     private String gender;
+    @Expose
     private Date birthDate;
 
     public Patient(Identifier identifier, HumanName name, String gender, Date birthDate) {

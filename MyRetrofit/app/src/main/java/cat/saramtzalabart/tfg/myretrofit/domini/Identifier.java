@@ -1,11 +1,14 @@
 package cat.saramtzalabart.tfg.myretrofit.domini;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Identifier {
+    @Expose
     private CodeableConcept type;
 
     @SerializedName("value")
+    @Expose
     private String dni;
 
     public Identifier(CodeableConcept type, String dni) {
